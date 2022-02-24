@@ -60,7 +60,50 @@
      }
      echo "</div>";
 
+     $stmt = $myConnexion->prepare("SELECT lastName,firstName FROM clients WHERE lastName LIKE 'M%' ORDER BY lastName ASC ");
+     $state = $stmt->execute();
+     echo "<div>";
+     echo "<span>". "Clients commençant par la lettre M"."</span>";
+     if ($state) {
+         foreach ($stmt->fetchAll() as $client) {
+             echo "<p>". "Nom: ".$client['lastName']."</p>";
+             echo "<p>"."Prenom: ".$client['firstName']."</p>";
+         }
+     }
+     echo "</div>";
 
+     $stmt = $myConnexion->prepare("SELECT * FROM shows ORDER BY title ASC ");
+     $state = $stmt->execute();
+     echo "<div>";
+     echo "<span>". "Liste des spectacles"."</span>";
+     if ($state) {
+         foreach ($stmt->fetchAll() as $show) {
+             echo "<p>". "Nom: ".$show['title']." par". $show['performer']." le: ".$show['date']." à ".$show['startTime']."heure"."</p>";
+
+         }
+     }
+     echo "</div>";
+
+     $stmt = $myConnexion->prepare("SELECT * FROM clients ");
+     $state = $stmt->execute();
+     echo "<div>";
+     echo "<span>". "Liste Clients"."</span>";
+     if ($state) {
+         foreach ($stmt->fetchAll() as $client) {
+             echo "<p>". "Nom: ".$client['lastName']."</p>";
+             echo "<p>"."Prenom: ".$client['firstName']."</p>";
+             echo "<p>"."Date de naissance: ".$client['birthDate']."</p>";
+
+             if ($client['card'] === '1') {
+                 echo "<p>" . "Carte de fidélité :oui";
+                 echo "<p>"."Numéro de carte: ".$client['cardNumber']."</p>";
+             }
+             else {
+                 echo "<p>" . "Carte de fidélité:non" ."</p>";
+             }
+         }
+     }
+     echo "</div>";
  }
  catch (PDOException $exception) {
      echo $exception->getMessage();
